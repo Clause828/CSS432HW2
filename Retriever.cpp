@@ -30,5 +30,9 @@ int main(int argc, char* argv[])
      server_address = argv[1];
      web_file = argv[2]; 
 
+    //having the get function taken 
+     string request = string("GET " + string(FILENAME) + " HTTP/1.1\r\n" +
+                                "Hosts: " + string(server_address) + "\r\n" +
+                                "\r\n"); // a get request is ended with a \r\n\r\n
 
 }

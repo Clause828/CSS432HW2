@@ -47,6 +47,11 @@ int main(int argc, char* argv[])
      server_address = argv[1];
      web_file = argv[2]; 
 
+    if(web_file == "")
+    {
+        cout << "Error: webfile is an empty name" << endl;
+        return -1;
+    }
     //Retrieve a hostent structure
 	int socketFD = settingUpSocket(argv);
     if(socketFD == 0)
@@ -112,7 +117,13 @@ int callGetRequest(int socketFD)
                                 "Host: " + string(server_address) + "\r\n" +
                                 "\r\n"); // a get request is ended with a \r\n\r\n
 
+    cout << "Request Sent " << request << endl;
     int sendRequest = send(socketFD, request.c_str(), strlen(request.c_str()), 0);
+    if(sendRequest <= 0)
+    {
+        cout << "Error: Sending Request Failed" << endl;
+        return 0;
+    }
     int bufSize = 0;
     while (true)
     {
@@ -126,7 +137,6 @@ int callGetRequest(int socketFD)
                 // Parse the number of byte that will be in the body of the message
         }
     }
-    // 6) Receive from the server an integer acknowledgement.
     ofstream outputFile;
     outputFile.open(FILENAME);
     //create a databuffer
@@ -145,6 +155,7 @@ int callGetRequest(int socketFD)
 }
 /**
  * Parsing the Response back so that we can get the relevant information
+ * @params int socketFD the socket File Descriptor. 
  * */
 string parseResponseHeader(int socketFD){
     string responseHeader = "";

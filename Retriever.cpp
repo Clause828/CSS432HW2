@@ -27,12 +27,34 @@ char *web_file;
 
 int main(int argc, char* argv[])
 {
+    if(argc != 3)
+    {
+        cout << "Incorrect number of argument provided. Server address folloed by File path. ";
+    }
+     
      server_address = argv[1];
      web_file = argv[2]; 
 
     //having the get function taken 
      string request = string("GET " + string(FILENAME) + " HTTP/1.1\r\n" +
-                                "Hosts: " + string(server_address) + "\r\n" +
+                                "Host: " + string(server_address) + "\r\n" +
                                 "\r\n"); // a get request is ended with a \r\n\r\n
+
+    //Retrieve a hostent structure
+	struct hostent* host = gethostbyname(server_address);
+	if (host == NULL)
+	{
+		std::cout << "Error: HOSTNAME failed" << std::endl;
+		return -1;
+	}
+    //Get the returning file
+    sockaddr_in sendSockAddr;
+	bzero((char*)&sendSockAddr, sizeof(sendSockAddr));
+	sendSockAddr.sin_family = AF_INET; // Address Family Internet
+	sendSockAddr.sin_addr.s_addr =
+		inet_addr(inet_ntoa(*(struct in_addr*)host->h_addr_list));
+	sendSockAddr.sin_port = htons(80); //default uotation
+
+    //Is there an error 
 
 }

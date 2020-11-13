@@ -1,13 +1,122 @@
-/*Your server waits for a connection and an HTTP GET request (Please perform multi-threaded handling).
+// Created by Duncan Spani and Jayden Spitek
+// 2020/10/23
+
+#include <sys/socket.h>   // socket, bind, listen, inet_ntoa
+#include <sys/time.h>	  //for gettimeofday()
+#include <netinet/in.h>   // htonl, htons, inet_ntoa
+#include <arpa/inet.h>    // inet_ntoa
+#include <netdb.h>        // gethostbyname
+#include <unistd.h>       // read, write, close
+#include <strings.h>      // bzero
+#include <sys/uio.h>      // writev
+#include <cstdlib>
+#include <iostream>
+#include <libcurl>
+
+const int PORT = 80;
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+int clientSD;
+int serverSD;
+
+string read_data() {
+    string response = "";
+    char end = 0;
+    while (true)
+    {
+        char current = 0;
+        recv(cliendSD, &current , 1 , 0);
+        if (current == '\n' || current == '\r')
+        {
+            if (end == '\r' && current == '\n')
+                break;
+        }
+        else response += current;
+        end = current;
+    }
+    return response;
+}
+
+
+void *thread_function(void *dummyPtr) {
+    // use port 80 for http
+    pthread_mutex_lock(&mutex1);
+    // read data
+    string request = read_data();
+    cout << request << endl;
+
+    // parse request
+
+
+    // do request
+
+
+    // construct response
+
+
+    // write response
+
+
+    pthread_mutex_unlock(&mutex1);
+    close(clientSD);
+    return nullptr;
+}
+
+
+int main() // 0 args
+{
+
+    // setup socket addr
+    sockaddr_in acceptSockAddr;
+    bzero((char*)&acceptSockAddr, sizeof(acceptSockAddr));
+    acceptSockAddr.sin_family= AF_INET; // Address Family Internet
+    acceptSockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    acceptSockAddr.sin_port = htons(PORT);
+
+    serverSD = socket(AF_INET, SOCK_STREAM, 0);
+
+    const int on = 1;
+    int set = setsockopt(serverSD, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(int));
+
+    int rc = bind(serverSD, (sockaddr*)&acceptSockAddr, sizeof(acceptSockAddr));
+
+    int listenSocket = listen(serverSD, 1);
+
+
+    while(true)
+    {    // create client sd
+        sockaddr_in clientSockAddr;
+        socklen_t clientSockAddrSize = sizeof(clientSockAddr);
+        std::cout << "Waiting for connection..." << std::endl;
+
+        // accept client
+        clientSD = accept(serverSD, (sockaddr *) &clientSockAddr,
+                          &clientSockAddrSize);
+        assert(clientSD == 0)
+
+        std::cout << "Client Connected" << std::endl;
+        pthread_t thread_id; //create thread
+
+        //std::cout <<"main() : creating thread, " << std::endl;
+        int ThreadResult = pthread_create(&thread_id, NULL, thread_function, NULL);
+
+        if(ThreadResult != 0 )
+        {
+            std::cout << "unable to create thread. Try again" << std::endl;
+            continue;
+        }
+
+
+    }
+}
+
+/*
+Your server waits for a connection and an HTTP GET request (Please perform multi-threaded handling).
 Your server only needs to respond to HTTP GET request.
 After receiving the GET request
 If the file exists, the server opens the file that is requested and sends it (along with the HTTP 200 OK code, of course).
 If the file requested does not exist, the server should return a 404 Not Found code along with a custom File Not Found page.
 If the HTTP request is for SecretFile.html then the web server should return a 401 Unauthorized.
-If the request is for a file that is above the directory structure where your web server is running ( for example, "GET ../../../etc/passwd" ), you should return a 403 Forbidden.
-Finally, if your server cannot understand the request, return a 400 Bad Request.*/
-
-int main(int argc, char* argv[])
-{
-    
-}
+If the request is for a file that is above the directory structure where your web server is running ( for example, "GET ../../../etc/passwd" ),
+ you should return a 403 Forbidden.
+Finally, if your server cannot understand the request, return a 400 Bad Request.
+*/

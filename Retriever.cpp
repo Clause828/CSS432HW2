@@ -46,12 +46,13 @@ int main(int argc, char* argv[])
 
     //Retrieve a hostent structure
 	int socketFD = settingUpSocket(argv);
-
     if(socketFD == 0)
     {
-        cout << "Error! socket failed." << endl; 
+        cout << "Error! Connection failed." << endl;
         return -1;
-    } 
+    }
+    cout << "Connected to server" << endl;
+
 
     return callGetRequest(socketFD);
 }
@@ -66,7 +67,7 @@ int settingUpSocket(char* argv[]){
     if (host == NULL)
     {
         std::cout << "Error: HOSTNAME failed" << std::endl;
-        return -1;
+        return 0;
     }
 
     //Declaring a sockaddr_in structure
@@ -79,23 +80,25 @@ int settingUpSocket(char* argv[]){
 
 
     // 1) Open a new socket and establish a connection to a server.
-    int clientSD = socket(AF_INET, SOCK_STREAM, 0);
-
-    if(clientSD == 0)
+    int serverFD = socket(AF_INET, SOCK_STREAM, 0);
+    cout << "Socket created" << endl;
+    if(serverFD == 0)
     {
         std::cout << "Error! Socket failed. " << std::endl;
-        return -1;
+        return 0;
     }
 
     //connect to the server
-    int returnCode = connect(clientSD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
+    cout << "Connecting to server" << endl;
+    //* DOES NOT WORK ON LOCALHOST *//
+    int returnCode = connect(serverFD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
     if(returnCode < 0)
     {
-        std::cout << "Error! Connect failed. " << std::endl;
-        close(clientSD);
-        return -1;
+        cout << "Error! Connect failed with code: " << returnCode<< endl;
+        close(serverFD);
+        return 0;
     }
-    return clientSD;
+    return serverFD;
 }
 /**
  * Processing the GetRequest HTTP
@@ -128,7 +131,8 @@ int callGetRequest(int socketFD)
     //create a databuffer
    	char databuf[bufSize];	
     //receieve the file information
-    recv(socketFD, &databuf, bufSize, 0);
+    string response = parseResponseHeader(socketFD);
+    cout << "Response: " << response << endl;
     // 2) Allocate databuf[nbufs][bufsize] if the sizes are the same.
     for(int i = 0; i < databuf[bufSize]; i++)
     {

@@ -12,8 +12,15 @@
 #include <cstdlib>
 #include <iostream>
 #include <cassert>
+#include <cstring>
 
 using namespace std;
+
+const string OK = "HTTP/1.1 200 OK\r\n";
+const string DOES_NOT_EXIST = "HTTP/1.1 404 Not Found\r\n";
+const string UNAUTHORIZED = "HTTP/1.1 401 Unauthorized\r\n";
+const string FORBIDDEN = "HTTP/1.1 403 Forbidden\r\n";
+const string BAD_REQUEST = "HTTP/1.1 400 Bad Request\r\n";
 
 const int PORT = 80;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
@@ -41,26 +48,62 @@ string read_data() {
         else response += current;
         end = current;
     }
+
     return response;
 }
 
+Request parse_request(string request){
+    Request parsed;
+    string str = "";
+    int arg = 0;
 
+    for (int i = 0; i <= request.length(); i++) {
+        if (arg == 3){
+            return parsed;
+        }
+        if (request[i] == ' ' || i == request.length()) {
+            if (arg == 0)
+                parsed.method = str;
+            else if (arg == 1)
+                parsed.uri = str;
+            else if (arg == 2)
+                parsed.protocol = str;
+            str = "";
+            arg++;
+        }
+        else
+            str += request[i];
+    }
+}
+
+string contruct_respponse(Request request){
+
+    if (request.method != "GET"){
+        return BAD_REQUEST + "\r\n";
+    }
+    else{
+        return OK + "\r\n";
+    }
+}
 
 void *thread_function(void *dummyPtr) {
     // use port 80 for http
     pthread_mutex_lock(&mutex1);
+
     // read request
     string request = read_data();
     cout << request << endl;
 
-    // process request
-
+    // parse request
+    Request parsed = parse_request(request);
 
     // construct response
-
+    string response = contruct_respponse(parsed);
 
     // write response
-
+    int sendResponse = send(clientSD, response.c_str(), strlen(response.c_str()), 0);
+    cout << "Response: " << response << endl;
+    cout << "Response Code: " << sendResponse << endl;
 
     pthread_mutex_unlock(&mutex1);
     close(clientSD);

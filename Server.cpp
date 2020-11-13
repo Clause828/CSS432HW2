@@ -149,7 +149,7 @@ int main() // 0 args
 
         if(ThreadResult != 0 )
         {
-            std::cout << "unable to create thread." << std::endl;
+            cout << "unable to create thread." << std::endl;
             continue;
         }
 

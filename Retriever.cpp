@@ -32,6 +32,10 @@ int settingUpSocket(char* argv[]);
 int callGetRequest(int socketFD);
 string parseResponseHeader(int socketFD);
 
+/**
+ * Main function
+ * @param int argc, char* argv[]
+ **/
 int main(int argc, char* argv[])
 {
     if(argc != 3)
@@ -52,8 +56,6 @@ int main(int argc, char* argv[])
         return -1;
     }
     cout << "Connected to server" << endl;
-
-
     return callGetRequest(socketFD);
 }
 
@@ -84,7 +86,7 @@ int settingUpSocket(char* argv[]){
     cout << "Socket created" << endl;
     if(serverFD == 0)
     {
-        std::cout << "Error! Socket failed. " << std::endl;
+        cout << "Error! Socket failed. " << std::endl;
         return 0;
     }
 
@@ -102,7 +104,7 @@ int settingUpSocket(char* argv[]){
 }
 /**
  * Processing the GetRequest HTTP
- *  
+ *  @param int socketFD (FileDescriptor)
  **/
 int callGetRequest(int socketFD)
 {   
@@ -153,7 +155,7 @@ string parseResponseHeader(int socketFD){
         char currentChar = 0;
         recv(socketFD, &currentChar, 1, 0);
         if (currentChar == '\r' || currentChar == '\n'){
-            if (lastChar == '\r' || lastChar == '\n'){
+            if (lastChar == '\r' || currentChar == '\n'){
                 break;
             }
         }

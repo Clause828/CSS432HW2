@@ -1,10 +1,8 @@
 #!/bin/bash
-#define ip and file/webpage
-ip=localhost
-wp=/
+# define ip and file/webpage
+#ip=localhost
+ip=64.227.48.38
+wp=SecretFile.html
 
-# compile retriever
-g++ -o retriever.out ./Retriever.cpp
-
-# run retriever
-./retriever.out $ip $wp
+# start retriever
+./retriever $ip $wp

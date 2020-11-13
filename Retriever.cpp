@@ -28,11 +28,16 @@ char *server_address;
 char *web_file;
 const int PORT_NUMBER = 80;
 
+int settingUpSocket(char* argv[]);
+int callGetRequest(int socketFD);
+string parseResponseHeader(int socketFD);
+
 int main(int argc, char* argv[])
 {
     if(argc != 3)
     {
         cout << "Incorrect number of argument provided. Server address followed by File path. ";
+        return -1;
     }
      
      server_address = argv[1];
@@ -41,6 +46,7 @@ int main(int argc, char* argv[])
 
     //Retrieve a hostent structure
 	int socketFD = settingUpSocket(argv);
+
     if(socketFD == 0)
     {
         cout << "Error! socket failed." << endl; 
@@ -55,36 +61,41 @@ int main(int argc, char* argv[])
  * @param *argv[]
  * */
 int settingUpSocket(char* argv[]){
+    //Retrieve a hostent structure
     struct hostent* host = gethostbyname(server_address);
-	if (host == NULL)
-	{
-		std::cout << "Error: HOSTNAME failed" << std::endl;
-		return -1;
-	}
-    //Get the returning file
-    sockaddr_in sendSockAddr;
-	bzero((char*)&sendSockAddr, sizeof(sendSockAddr));
-	sendSockAddr.sin_family = AF_INET; // Address Family Internet
-	sendSockAddr.sin_addr.s_addr =
-		inet_addr(inet_ntoa(*(struct in_addr*)host->h_addr_list));
-	sendSockAddr.sin_port = htons(PORT_NUMBER); //default uotation
-
-	// 1) Open a new socket and establish a connection to a server.
-	int socketFD = socket(AF_INET, SOCK_STREAM, 0);
-
-	if(socketFD == 0)
-	{	
-		std::cout << "Error! Socket failed. " << std::endl;
-		return -1;
-	}
-
-	//connect to the server
-	int socketConnect = connect(socketFD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
-    if (socketConnect == -1)
+    if (host == NULL)
     {
-        cout << "Invalid socket connection." << endl;
+        std::cout << "Error: HOSTNAME failed" << std::endl;
+        return -1;
     }
-    return socketFD;
+
+    //Declaring a sockaddr_in structure
+    sockaddr_in sendSockAddr;
+    bzero((char*)&sendSockAddr, sizeof(sendSockAddr));
+    sendSockAddr.sin_family = AF_INET; // Address Family Internet
+    sendSockAddr.sin_addr.s_addr =
+            inet_addr(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
+    sendSockAddr.sin_port = htons(PORT_NUMBER);
+
+
+    // 1) Open a new socket and establish a connection to a server.
+    int clientSD = socket(AF_INET, SOCK_STREAM, 0);
+
+    if(clientSD == 0)
+    {
+        std::cout << "Error! Socket failed. " << std::endl;
+        return -1;
+    }
+
+    //connect to the server
+    int returnCode = connect(clientSD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
+    if(returnCode < 0)
+    {
+        std::cout << "Error! Connect failed. " << std::endl;
+        close(clientSD);
+        return -1;
+    }
+    return clientSD;
 }
 /**
  * Processing the GetRequest HTTP
@@ -102,6 +113,8 @@ int callGetRequest(int socketFD)
     while (true)
     {
         string responseHeader = parseResponseHeader(socketFD);
+        if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
+        cout << responseHeader << endl;
         if(responseHeader.substr(0,15) == "Content-Length:" )
         {
             bufSize = atoi(responseHeader.substr(
@@ -132,18 +145,19 @@ int callGetRequest(int socketFD)
 string parseResponseHeader(int socketFD){
     string responseHeader = "";
     char lastChar = 0;
-    while(true)
-    {
+    while(true) {
         char currentChar = 0;
         recv(socketFD, &currentChar, 1, 0);
-        if(currentChar == '\r' || currentChar == '\n')
-            if(lastChar == '\r' || lastChar == '\n')
+        if (currentChar == '\r' || currentChar == '\n'){
+            if (lastChar == '\r' || lastChar == '\n'){
                 break;
-        else
-        {
-            lastChar += currentChar;
+            }
+        }
+        else {
             responseHeader += currentChar;
         }
-        return responseHeader;
+        lastChar += currentChar;
     }
+    return responseHeader;
+
 }

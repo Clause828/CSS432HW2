@@ -11,12 +11,20 @@
 #include <sys/uio.h>      // writev
 #include <cstdlib>
 #include <iostream>
-#include <libcurl>
+#include <cassert>
+
+using namespace std;
 
 const int PORT = 80;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int clientSD;
 int serverSD;
+
+struct Request{
+    string method;
+    string uri;
+    string protocol;
+};
 
 string read_data() {
     string response = "";
@@ -24,7 +32,7 @@ string read_data() {
     while (true)
     {
         char current = 0;
-        recv(cliendSD, &current , 1 , 0);
+        recv(clientSD, &current , 1 , 0);
         if (current == '\n' || current == '\r')
         {
             if (end == '\r' && current == '\n')
@@ -37,17 +45,15 @@ string read_data() {
 }
 
 
+
 void *thread_function(void *dummyPtr) {
     // use port 80 for http
     pthread_mutex_lock(&mutex1);
-    // read data
+    // read request
     string request = read_data();
     cout << request << endl;
 
-    // parse request
-
-
-    // do request
+    // process request
 
 
     // construct response
@@ -64,7 +70,6 @@ void *thread_function(void *dummyPtr) {
 
 int main() // 0 args
 {
-
     // setup socket addr
     sockaddr_in acceptSockAddr;
     bzero((char*)&acceptSockAddr, sizeof(acceptSockAddr));
@@ -78,7 +83,7 @@ int main() // 0 args
     int set = setsockopt(serverSD, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(int));
 
     int rc = bind(serverSD, (sockaddr*)&acceptSockAddr, sizeof(acceptSockAddr));
-
+    cout << "Socket Created" << endl;
     int listenSocket = listen(serverSD, 1);
 
 
@@ -86,14 +91,14 @@ int main() // 0 args
     {    // create client sd
         sockaddr_in clientSockAddr;
         socklen_t clientSockAddrSize = sizeof(clientSockAddr);
-        std::cout << "Waiting for connection..." << std::endl;
 
+        cout << "Listening on port: " << PORT << endl;
         // accept client
         clientSD = accept(serverSD, (sockaddr *) &clientSockAddr,
                           &clientSockAddrSize);
-        assert(clientSD == 0)
+        assert(clientSD != 0);
 
-        std::cout << "Client Connected" << std::endl;
+        cout << "Client Connected" << endl;
         pthread_t thread_id; //create thread
 
         //std::cout <<"main() : creating thread, " << std::endl;
@@ -101,7 +106,7 @@ int main() // 0 args
 
         if(ThreadResult != 0 )
         {
-            std::cout << "unable to create thread. Try again" << std::endl;
+            std::cout << "unable to create thread." << std::endl;
             continue;
         }
 

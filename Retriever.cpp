@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
      server_address = argv[1];
      web_file = argv[2]; 
 
-
     //Retrieve a hostent structure
 	int socketFD = settingUpSocket(argv);
     if(socketFD == 0)
@@ -96,7 +95,7 @@ int settingUpSocket(char* argv[]){
     int returnCode = connect(serverFD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
     if(returnCode < 0)
     {
-        cout << "Error! Connect failed with code: " << returnCode<< endl;
+        cout << "Error! Connect failed with code: " << returnCode << endl;
         close(serverFD);
         return 0;
     }
@@ -119,7 +118,7 @@ int callGetRequest(int socketFD)
     {
         string responseHeader = parseResponseHeader(socketFD);
         if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
-        cout << responseHeader << endl;
+        cout << "ResponseHeader: " << responseHeader << endl;
         if(responseHeader.substr(0,15) == "Content-Length:" )
         {
             bufSize = atoi(responseHeader.substr(
@@ -133,8 +132,7 @@ int callGetRequest(int socketFD)
     //create a databuffer
    	char databuf[bufSize];	
     //receieve the file information
-    string response = parseResponseHeader(socketFD);
-    cout << "Response: " << response << endl;
+    recv(socketFD, &databuf, bufSize, 0);
     // 2) Allocate databuf[nbufs][bufsize] if the sizes are the same.
     for(int i = 0; i < databuf[bufSize]; i++)
     {
@@ -165,5 +163,4 @@ string parseResponseHeader(int socketFD){
         lastChar += currentChar;
     }
     return responseHeader;
-
 }

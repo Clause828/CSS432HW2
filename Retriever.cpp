@@ -125,11 +125,17 @@ int callGetRequest(int socketFD)
         return 0;
     }
     int bufSize = 0;
+    string responseHeader;
     while (true)
     {
-        string responseHeader = parseResponseHeader(socketFD);
+        responseHeader = parseResponseHeader(socketFD);
         if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
         cout << "ResponseHeader: " << responseHeader << endl;
+        if(responseHeader != "HTTP/1.1 200 OK")
+        {
+            cout << "Error: Bad Code " << responseHeader << endl;
+            return 0;
+        }
         if(responseHeader.substr(0,15) == "Content-Length:" )
         {
             bufSize = atoi(responseHeader.substr(

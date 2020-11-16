@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
      server_address = argv[1];
      web_file = argv[2]; 
 
-    if(web_file == "")
+    if(web_file == nullptr)
     {
         cout << "Error: webfile is an empty name" << endl;
         return -1;
@@ -87,7 +87,6 @@ int settingUpSocket(char* argv[]){
 
     // 1) Open a new socket and establish a connection to a server.
     int serverFD = socket(AF_INET, SOCK_STREAM, 0);
-    cout << "Socket created" << endl;
     if(serverFD == 0)
     {
         cout << "Error! Socket failed. " << std::endl;
@@ -95,7 +94,6 @@ int settingUpSocket(char* argv[]){
     }
 
     //connect to the server
-    cout << "Connecting to server" << endl;
     //* DOES NOT WORK ON LOCALHOST *//
     int returnCode = connect(serverFD, (sockaddr*)&sendSockAddr, sizeof(sendSockAddr));
     if(returnCode < 0)
@@ -171,6 +169,7 @@ string parseResponseHeader(int socketFD){
         recv(socketFD, &currentChar, 1, 0);
         if (currentChar == '\r' || currentChar == '\n'){
             if (lastChar == '\r' || currentChar == '\n'){
+                // header ends with \r\n
                 break;
             }
         }

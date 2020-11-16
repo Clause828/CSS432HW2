@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
 
@@ -76,14 +77,74 @@ Request parse_request(string request){
     }
 }
 
-string contruct_respponse(Request request){
-
+string contruct_response(Request &request){
+    string response = "";
+    // cannot understand request 400
     if (request.method != "GET"){
-        return BAD_REQUEST + "\r\n";
+        response = BAD_REQUEST;
     }
-    else{
-        return OK + "\r\n";
+    else if (request.method == "GET"){
+        // past contains ".." - forbidden 403
+        if (request.uri.substr(0,2) == ".."){
+            response = FORBIDDEN;
+        }
+            // request for secret file
+        else if (request.uri.length() >= 15 &&
+                 request.uri.substr(request.uri.length() - 15, request.uri.length()) == "SecretFile.html"){
+            response = UNAUTHORIZED;
+        }
+            // request is accepted
+        else {
+            // get current directory using "."
+            if (request.uri[0] != '.' && request.uri[0] != '/'){
+                request.uri = "./" + request.uri;
+            }
+            else if (request.uri[0] == '/'){
+                request.uri = "." + request.uri;
+            }
+
+            cout << "File: " << request.uri << endl;
+            //try to open file, nullptr is does not exist/unathorized
+            FILE *file = fopen(request.uri.c_str() , "r");
+            if (file == nullptr){
+                // no read permission
+                if (errno == EACCES){
+                    // 401
+                    response = UNAUTHORIZED;
+                }
+                else{
+                    // 404
+                    response = DOES_NOT_EXIST;
+                    // seg fault
+                    ifstream file("FileNotFound.txt");
+                    string line;
+                    if (file.is_open()){
+                        while (getline(file, line)) {
+                            response += line;
+                        }
+                    }
+                    file.close();
+                }
+            }
+            else {
+                // 200
+                response = OK;
+                while (!feof(file)) {
+                    char c = fgetc(file);
+                    if (c < 0) {
+                        // char not in ascii table
+                        continue;
+                    }
+                    response += c;
+                }
+                fclose(file);
+            }
+        }
     }
+    else {
+        response = BAD_REQUEST;
+    }
+    return response + "\r\n";
 }
 
 void *thread_function(void *dummyPtr) {
@@ -98,12 +159,10 @@ void *thread_function(void *dummyPtr) {
     Request parsed = parse_request(request);
 
     // construct response
-    string response = contruct_respponse(parsed);
+    string response = contruct_response(parsed);
 
     // write response
     int sendResponse = send(clientSD, response.c_str(), strlen(response.c_str()), 0);
-    cout << "Response: " << response << endl;
-    cout << "Response Code: " << sendResponse << endl;
 
     pthread_mutex_unlock(&mutex1);
     close(clientSD);

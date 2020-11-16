@@ -11,3 +11,6 @@
 5) Your retriever requesting a forbidden file from your server (demo script)  
 6) Your retriever requesting a non-existent file from your server (demo script)  
 7) Your retriever sending a malformed request to your server (demo script)
+
+### Cant access from web browser
+### parsing response error

@@ -111,35 +111,20 @@ int settingUpSocket(char* argv[]){
 int callGetRequest(int socketFD)
 {   
     //having the get function taken 
-    string request = string("GET " + string(FILENAME) + " HTTP/1.1\r\n" +
-                                "Host: " + string(server_address) + "\r\n" +
-                                "\r\n"); // a get request is ended with a \r\n\r\n
-
-    cout << "Request Sent " << request << endl;
-    int sendRequest = send(socketFD, request.c_str(), strlen(request.c_str()), 0);
-    if(sendRequest <= 0)
+    responseHeader = parseResponseHeader(socketFD);
+    tempResponse = responseHeader;
+    if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
+    cout << "ResponseHeader: " << responseHeader << endl;
+    if(tempResponse.substr(0,15) != "HTTP/1.1 200 OK")
     {
-        cout << "Error: Sending Request Failed" << endl;
+        cout << "Error: Bad Response " << responseHeader << endl;
         return 0;
     }
-    int bufSize = 0;
-    string responseHeader;
-    while (true)
+    if(responseHeader.substr(0,15) == "Content-Length:" )
     {
-        responseHeader = parseResponseHeader(socketFD);
-        if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
-        cout << "ResponseHeader: " << responseHeader << endl;
-        if(responseHeader != "HTTP/1.1 200 OK")
-        {
-            cout << "Error: Bad Code " << responseHeader << endl;
-            return 0;
-        }
-        if(responseHeader.substr(0,15) == "Content-Length:" )
-        {
-            bufSize = atoi(responseHeader.substr(
+        bufSize = atoi(responseHeader.substr(
                 16, responseHeader.length()).c_str());
-                // Parse the number of byte that will be in the body of the message
-        }
+        // Parse the number of byte that will be in the body of the message
     }
     ofstream outputFile;
     outputFile.open(FILENAME);

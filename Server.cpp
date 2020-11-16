@@ -157,10 +157,10 @@ void *thread_function(void *dummyPtr) {
 
     // parse request
     Request parsed = parse_request(request);
-
+    cout << "Parsed: " << parsed.method << " " << parsed.uri << " " << parsed.protocol << endl;
     // construct response
     string response = contruct_response(parsed);
-
+    cout << response << endl;
     // write response
     int sendResponse = send(clientSD, response.c_str(), strlen(response.c_str()), 0);
 

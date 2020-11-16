@@ -23,7 +23,6 @@ Your retriever should exit after receiving the response.
 The server name can be either an IP address for simplicity. */
 
 using namespace std; 
-string FILENAME = "content.txt"; 
 char *server_address;
 char *web_file;
 const int PORT_NUMBER = 80;
@@ -45,7 +44,8 @@ int main(int argc, char* argv[])
     }
      
      server_address = argv[1];
-     web_file = argv[2]; 
+     web_file = argv[2];
+     cout << "File: " << web_file << endl;
 
     if(web_file == nullptr)
     {
@@ -104,32 +104,48 @@ int settingUpSocket(char* argv[]){
     }
     return serverFD;
 }
-/**
- * Processing the GetRequest HTTP
- *  @param int socketFD (FileDescriptor)
- **/
+/* Processing the GetRequest HTTP
+*  @param int socketFD (FileDescriptor)
+*/
 int callGetRequest(int socketFD)
-{   
-    //having the get function taken 
-    responseHeader = parseResponseHeader(socketFD);
-    tempResponse = responseHeader;
-    if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
-    cout << "ResponseHeader: " << responseHeader << endl;
-    if(tempResponse.substr(0,15) != "HTTP/1.1 200 OK")
+{
+    //having the get function taken
+    string request = string("GET " + string(web_file) + " HTTP/1.1\r\n" +
+                            "Host: " + string(server_address) + "\r\n" +
+                            "\r\n"); // a get request is ended with a \r\n\r\n
+
+    cout << "Request Sent " << request << endl;
+    int sendRequest = send(socketFD, request.c_str(), strlen(request.c_str()), 0);
+    if(sendRequest <= 0)
     {
-        cout << "Error: Bad Response " << responseHeader << endl;
+        cout << "Error: Sending Request Failed" << endl;
         return 0;
     }
-    if(responseHeader.substr(0,15) == "Content-Length:" )
+    int bufSize = 0;
+    string responseHeader;
+    string tempResponse;
+    while (true)
     {
-        bufSize = atoi(responseHeader.substr(
-                16, responseHeader.length()).c_str());
-        // Parse the number of byte that will be in the body of the message
+        responseHeader = parseResponseHeader(socketFD);
+        tempResponse = responseHeader;
+        if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
+        cout << "ResponseHeader: " << responseHeader << endl;
+        if(tempResponse.substr(0,15) != "HTTP/1.1 200 OK")
+        {
+            cout << "Error: Bad Response " << responseHeader << endl;
+            return 0;
+        }
+        if(responseHeader.substr(0,15) == "Content-Length:" )
+        {
+            bufSize = atoi(responseHeader.substr(
+                    16, responseHeader.length()).c_str());
+            // Parse the number of byte that will be in the body of the message
+        }
     }
     ofstream outputFile;
-    outputFile.open(FILENAME);
+    outputFile.open(web_file);
     //create a databuffer
-   	char databuf[bufSize];	
+    char databuf[bufSize];
     //receieve the file information
     recv(socketFD, &databuf, bufSize, 0);
     // 2) Allocate databuf[nbufs][bufsize] if the sizes are the same.

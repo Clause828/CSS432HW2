@@ -1,20 +1,20 @@
 #!/bin/bash
 # define ip and file/webpage
 #ip=localhost
-ip=10.158.82.115
+ip=
 
 # compile retriever
 g++ -o retriever ./Retriever.cpp
 
 # start retriever
 # 401 unauthorized
-./retriever $ip SecretFile.html
+./retriever 64.227.48.38/SecretFile.html
 # 200 ok
-./retriever $ip content.txt
+./retriever 64.227.48.38/content.txt
 # 403 forbidden
-./retriever $ip ../file.html
+./retriever 64.227.48.38/../file.html
 # 200 ok
-./retriever $ip /content.txt
+./retriever 64.227.48.38/content.txt
 # 404 not found
-./retriever $ip ././/hjklh
+./retriever 64.227.48.38/././/hjklh
 

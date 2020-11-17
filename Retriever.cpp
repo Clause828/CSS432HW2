@@ -25,7 +25,7 @@ The server name can be either an IP address for simplicity. */
 using namespace std; 
 char *server_address;
 char *web_file;
-const int PORT_NUMBER = 4001;
+const int PORT_NUMBER = 80;
 
 int settingUpSocket(char* argv[]);
 int callGetRequest(int socketFD);
@@ -37,15 +37,22 @@ string getFileName(char *file, string insert);
  **/
 int main(int argc, char* argv[])
 {
-    if(argc != 3)
+    if(argc != 2)
     {
         cout << "Incorrect number of argument provided. Server address followed by File path. ";
         return -1;
     }
      
-     server_address = argv[1];
-     web_file = argv[2];
-
+    server_address = argv[1];
+    web_file = argv[1];
+    string tempServer(server_address);
+    string hello(web_file);
+    server_address = (char*)tempServer.substr(0, tempServer.find('/')).c_str();
+    web_file = (char *)tempServer.substr(tempServer.find('/')+1).c_str();
+    cout << "Just Printing: " << (char*)tempServer.substr(tempServer.find('/')).c_str() << endl;
+    cout << "Temp Server: " << tempServer << endl;
+    cout << "Server Address: " << server_address << endl;
+    cout << "WebFile: " << web_file << endl;
     if(web_file == nullptr)
     {
         cout << "Error: webfile is an empty name" << endl;
@@ -71,7 +78,7 @@ int settingUpSocket(char* argv[]){
     struct hostent* host = gethostbyname(server_address);
     if (host == NULL)
     {
-        std::cout << "Error: HOSTNAME failed" << std::endl;
+        cout << "Error: HOSTNAME failed" << endl;
         return 0;
     }
 

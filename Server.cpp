@@ -34,7 +34,7 @@ const string UNAUTHORIZED = "HTTP/1.1 401 Unauthorized\r\n";
 const string FORBIDDEN = "HTTP/1.1 403 Forbidden\r\n";
 const string BAD_REQUEST = "HTTP/1.1 400 Bad Request\r\n";
 
-const int PORT = 4001;
+const int PORT = 80;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int clientSD;
 int serverSD;

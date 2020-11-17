@@ -123,13 +123,17 @@ int callGetRequest(int socketFD)
     int bufSize = 0;
     string responseHeader;
     string tempResponse;
+    bool headerFlag = false;
     while (true)
     {
         responseHeader = parseResponseHeader(socketFD);
+        cout << "reponse: " << responseHeader << endl;
         tempResponse = responseHeader;
         if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
         cout << "ResponseHeader: " << responseHeader << endl;
-        if(tempResponse.substr(0,15) != "HTTP/1.1 200 OK")
+        if (responseHeader.substr(0,15) == "HTTP/1.1 200 OK")
+            headerFlag = true;
+        else if (tempResponse.substr(0,15) != "HTTP/1.1 200 OK" && headerFlag == false)
         {
             cout << "Error: Bad Response " << responseHeader << endl;
             return 0;
@@ -142,16 +146,20 @@ int callGetRequest(int socketFD)
         }
     }
     ofstream outputFile;
-    outputFile.open(web_file);
+    string file_recv = "recieved.txt";
+    outputFile.open(file_recv);
     //create a databuffer
     char databuf[bufSize];
     //receieve the file information
+
     recv(socketFD, &databuf, bufSize, 0);
     // 2) Allocate databuf[nbufs][bufsize] if the sizes are the same.
-    for(int i = 0; i < databuf[bufSize]; i++)
+    for(int i = 0; i < bufSize; i++)
     {
         outputFile << databuf[i];
+        cout << databuf[i];
     }
+    cout << endl;
     outputFile.close();
     close(socketFD);
     cout << "Finished Writing HTTP file to the output file" << endl;

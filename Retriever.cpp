@@ -45,7 +45,6 @@ int main(int argc, char* argv[])
      
      server_address = argv[1];
      web_file = argv[2];
-     cout << "File: " << web_file << endl;
 
     if(web_file == nullptr)
     {

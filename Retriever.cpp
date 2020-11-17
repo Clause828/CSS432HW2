@@ -46,7 +46,6 @@ int main(int argc, char* argv[])
     server_address = argv[1];
     web_file = argv[1];
     string tempServer(server_address);
-    string hello(web_file);
     server_address = (char*)tempServer.substr(0, tempServer.find('/')).c_str();
     web_file = (char *)tempServer.substr(tempServer.find('/')+1).c_str();
     if(web_file == nullptr)
@@ -147,7 +146,10 @@ int callGetRequest(int socketFD)
         }
     }
     ofstream outputFile;
+
     string curr_file(web_file);
+    size_t found = curr_file.find_last_of("/");
+    curr_file = curr_file.substr(found+1);
     string file_recv = "recv_" + curr_file;
     outputFile.open(file_recv);
     //create a databuffer

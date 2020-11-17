@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8c16a764-2333-4d20-8109-10ce6f45b369" name="Default Changelist" comment="added css lab output">
+      <change beforePath="$PROJECT_DIR$/Retriever.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Retriever.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retriever_start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/retriever_start.sh" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1k9zHuCyZEn7AfBxz1YIilozxml" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/server.exe" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="language.cpp.clang-tidy" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="CMakeRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" RUN_PATH="$PROJECT_DIR$/server.exe" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8c16a764-2333-4d20-8109-10ce6f45b369" name="Default Changelist" comment="" />
+      <created>1605127510870</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605127510870</updated>
+      <workItem from="1605127511977" duration="35431000" />
+      <workItem from="1605421462064" duration="3380000" />
+      <workItem from="1605436875759" duration="30631000" />
+      <workItem from="1605596602440" duration="2512000" />
+    </task>
+    <task id="LOCAL-00001" summary="added secrefile and scripts">
+      <created>1605229597947</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1605229597947</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fixed retriever to connect, added build script">
+      <created>1605264798273</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1605264798273</updated>
+    </task>
+    <task id="LOCAL-00003" summary="a few changes">
+      <created>1605271470374</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605271470374</updated>
+    </task>
+    <task id="LOCAL-00004" summary="updated server">
+      <created>1605564350219</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605564350219</updated>
+    </task>
+    <task id="LOCAL-00005" summary="added 404 file">
+      <created>1605565622531</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605565622531</updated>
+    </task>
+    <task id="LOCAL-00006" summary="removed bugs">
+      <created>1605566531459</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1605566531459</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fixed server.cpp">
+      <created>1605571513089</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1605571513089</updated>
+    </task>
+    <task id="LOCAL-00008" summary="did jaydens job">
+      <created>1605574211009</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1605574211009</updated>
+    </task>
+    <task id="LOCAL-00009" summary="added browser screenshot and fixed recieved file name convention">
+      <created>1605574903124</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1605574903124</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added outputs">
+      <created>1605576141098</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1605576141098</updated>
+    </task>
+    <task id="LOCAL-00011" summary="added css lab output">
+      <created>1605576490213</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1605576490213</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added secrefile and scripts" />
+    <MESSAGE value="fixed retriever to connect, added build script" />
+    <MESSAGE value="a few changes" />
+    <MESSAGE value="updated server" />
+    <MESSAGE value="added 404 file" />
+    <MESSAGE value="removed bugs" />
+    <MESSAGE value="fixed server.cpp" />
+    <MESSAGE value="did jaydens job" />
+    <MESSAGE value="added browser screenshot and fixed recieved file name convention" />
+    <MESSAGE value="added outputs" />
+    <MESSAGE value="added css lab output" />
+    <option name="LAST_COMMIT_MESSAGE" value="added css lab output" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1499" y="684" width="1081" height="735" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605525685737">
+      <screen x="1080" y="504" width="1920" height="1080" />
+    </state>
+    <state x="1499" y="684" width="1081" height="735" key="#com.intellij.execution.impl.EditConfigurationsDialog/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605525685737" />
+    <state x="1824" y="784" key="FileChooserDialogImpl" timestamp="1605525621471">
+      <screen x="1080" y="504" width="1920" height="1080" />
+    </state>
+    <state x="1824" y="784" key="FileChooserDialogImpl/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605525621471" />
+    <state x="1846" y="710" width="387" height="632" key="RollbackChangesDialog" timestamp="1605598588193">
+      <screen x="1080" y="504" width="1920" height="1080" />
+    </state>
+    <state x="1846" y="710" width="387" height="632" key="RollbackChangesDialog/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605598588192" />
+    <state x="1636" y="762" key="Vcs.Push.Dialog.v2" timestamp="1605576492601">
+      <screen x="1080" y="504" width="1920" height="1080" />
+    </state>
+    <state x="1636" y="762" key="Vcs.Push.Dialog.v2/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605576492601" />
+    <state x="1844" y="941" width="391" height="169" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605598615998">
+      <screen x="1080" y="504" width="1920" height="1080" />
+    </state>
+    <state x="1844" y="941" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605598615998" />
+    <state x="3764" y="941" width="391" height="169" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@3000.504.1920.1080" timestamp="1605421468995" />
+    <state x="3000" y="504" width="1550" height="1004" maximized="true" key="dock-window-1" timestamp="1605269827965">
+      <screen x="3000" y="504" width="1920" height="1080" />
+    </state>
+    <state x="3000" y="504" width="1550" height="1004" maximized="true" key="dock-window-1/1080.504.1920.1080/0.0.1080.1920/3000.504.1920.1080@1080.504.1920.1080" timestamp="1605269827965" />
+  </component>
+</project>

@@ -1,5 +1,5 @@
 // Created by Duncan Spani and Jayden Stipek
-// 2020/11/26
+// 2020/11/11
 
 #include <sys/socket.h>   // socket, bind, listen, inet_ntoa
 #include <sys/time.h>	  //for gettimeofday()
@@ -254,7 +254,5 @@ int main() // 0 args
             cout << "unable to create thread." << std::endl;
             continue;
         }
-
-
     }
 }

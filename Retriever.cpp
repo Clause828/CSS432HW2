@@ -49,10 +49,6 @@ int main(int argc, char* argv[])
     string hello(web_file);
     server_address = (char*)tempServer.substr(0, tempServer.find('/')).c_str();
     web_file = (char *)tempServer.substr(tempServer.find('/')+1).c_str();
-    cout << "Just Printing: " << (char*)tempServer.substr(tempServer.find('/')).c_str() << endl;
-    cout << "Temp Server: " << tempServer << endl;
-    cout << "Server Address: " << server_address << endl;
-    cout << "WebFile: " << web_file << endl;
     if(web_file == nullptr)
     {
         cout << "Error: webfile is an empty name" << endl;

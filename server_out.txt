@@ -1,0 +1,69 @@
+Socket Created
+Listening on port: 4001
+Client Connected
+Listening on port: 4001
+Request: GET SecretFile.html HTTP/1.1
+Parsed:
+Method: GET
+URI: SecretFile.html
+Protocol: HTTP/1.1
+HTTP/1.1 401 Unauthorized
+Content-Length: 27
+Content-Type: text/plain
+
+HTTP/1.1 401 Unauthorized
+
+Client Connected
+Listening on port: 4001
+Request: GET content.txt HTTP/1.1
+Parsed:
+Method: GET
+URI: content.txt
+Protocol: HTTP/1.1
+File: ./content.txt
+HTTP/1.1 200 OK
+Content-Length: 26
+Content-Type: text/plain
+
+This is a file
+content.txt
+Client Connected
+Listening on port: 4001
+Request: GET ../file.html HTTP/1.1
+Parsed:
+Method: GET
+URI: ../file.html
+Protocol: HTTP/1.1
+HTTP/1.1 403 Forbidden
+Content-Length: 24
+Content-Type: text/plain
+
+HTTP/1.1 403 Forbidden
+
+Client Connected
+Listening on port: 4001
+Request: GET /content.txt HTTP/1.1
+Parsed:
+Method: GET
+URI: /content.txt
+Protocol: HTTP/1.1
+File: ./content.txt
+HTTP/1.1 200 OK
+Content-Length: 26
+Content-Type: text/plain
+
+This is a file
+content.txt
+Client Connected
+Listening on port: 4001
+Request: GET ././/hjklh HTTP/1.1
+Parsed:
+Method: GET
+URI: ././/hjklh
+Protocol: HTTP/1.1
+File: ././/hjklh
+HTTP/1.1 404 Not Found
+Content-Length: 22
+Content-Type: text/plain
+
+Error: File Not Found.

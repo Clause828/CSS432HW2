@@ -1,7 +1,7 @@
 #!/bin/bash
 # define ip and file/webpage
 #ip=localhost
-ip=64.227.48.38
+ip=10.158.82.115
 
 # compile retriever
 g++ -o retriever ./Retriever.cpp

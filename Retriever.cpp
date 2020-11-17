@@ -25,7 +25,7 @@ The server name can be either an IP address for simplicity. */
 using namespace std; 
 char *server_address;
 char *web_file;
-const int PORT_NUMBER = 80;
+const int PORT_NUMBER = 4001;
 
 int settingUpSocket(char* argv[]);
 int callGetRequest(int socketFD);
@@ -127,10 +127,8 @@ int callGetRequest(int socketFD)
     while (true)
     {
         responseHeader = parseResponseHeader(socketFD);
-        cout << "reponse: " << responseHeader << endl;
         tempResponse = responseHeader;
         if ( responseHeader == "" ) break; // This can only happen when double \r\n\r\n that represent the end of header
-        cout << "ResponseHeader: " << responseHeader << endl;
         if (responseHeader.substr(0,15) == "HTTP/1.1 200 OK")
             headerFlag = true;
         else if (tempResponse.substr(0,15) != "HTTP/1.1 200 OK" && headerFlag == false)

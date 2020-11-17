@@ -23,7 +23,7 @@ const string UNAUTHORIZED = "HTTP/1.1 401 Unauthorized\r\n";
 const string FORBIDDEN = "HTTP/1.1 403 Forbidden\r\n";
 const string BAD_REQUEST = "HTTP/1.1 400 Bad Request\r\n";
 
-const int PORT = 80;
+const int PORT = 4001;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int clientSD;
 int serverSD;
@@ -145,7 +145,6 @@ void contruct_response(Request &request, string &status, string &file_content){
         }
     }
     else {
-        cout << "bottom 400" << endl;
         status = BAD_REQUEST;
         file_content = BAD_REQUEST;
     }
@@ -161,7 +160,6 @@ void *thread_function(void *dummyPtr) {
 
     // parse request
     Request parsed = parse_request(request);
-    cout << "Parsed:\nMethod: " << parsed.method << "\nURI: " << parsed.uri << "\nProtocol: " << parsed.protocol << endl;
     // construct response
     string code;
     string file_content;

@@ -1,4 +1,4 @@
-// Created by Duncan Spani and Jayden Spitek
+// Created by Duncan Spani and Jayden Stipek
 // 2020/11/11
 
 #include <sys/socket.h>   // socket, bind, listen, inet_ntoa
@@ -103,9 +103,9 @@ int settingUpSocket(char* argv[]){
     }
     return serverFD;
 }
-/* Processing the GetRequest HTTP
+/** Processing the GetRequest HTTP
 *  @param int socketFD (FileDescriptor)
-*/
+**/
 int callGetRequest(int socketFD)
 {
     //having the get function taken
@@ -166,8 +166,8 @@ int callGetRequest(int socketFD)
 }
 /**
  * Parsing the Response back so that we can get the relevant information
- * @params int socketFD the socket File Descriptor. 
- * */
+ * @param int socketFD the socket File Descriptor. 
+ **/
 string parseResponseHeader(int socketFD){
     string responseHeader = "";
     char lastChar = 0;

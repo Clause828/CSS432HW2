@@ -1,5 +1,5 @@
-// Created by Duncan Spani and Jayden Spitek
-// 2020/10/23
+// Created by Duncan Spani and Jayden Stipek
+// 2020/11/26
 
 #include <sys/socket.h>   // socket, bind, listen, inet_ntoa
 #include <sys/time.h>	  //for gettimeofday()
@@ -15,6 +15,17 @@
 #include <cstring>
 #include <fstream>
 
+/*Server.CPP
+*Your server waits for a connection and an HTTP GET request (Please perform multi-threaded handling).
+Your server only needs to respond to HTTP GET request.
+After receiving the GET request 
+*If the file exists, the server opens the file that is requested and sends it (along with the HTTP 200 OK code, of course).
+If the file requested does not exist, the server should return a 404 Not Found code along with a custom File Not Found page.
+If the HTTP request is for SecretFile.html then the web server should return a 401 Unauthorized.
+If the request is for a file that is above the directory structure where your web server is running ( for example, "GET ../../../etc/passwd" ), you should return a 403 Forbidden.
+Finally, if your server cannot understand the request, return a 400 Bad Request.
+After you handle the request, your server should return to waiting for the next request.
+*/
 using namespace std;
 
 const string OK = "HTTP/1.1 200 OK\r\n";
@@ -27,13 +38,17 @@ const int PORT = 4001;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 int clientSD;
 int serverSD;
-
+ //Struct for Requests given to the server
 struct Request{
     string method;
     string uri;
     string protocol;
 };
 
+/**
+ * Parsing the data from and incomming request 
+ * from a client returning a string from the response
+ **/
 string read_data() {
     string response = "";
     char end = 0;
@@ -52,7 +67,12 @@ string read_data() {
 
     return response;
 }
-
+/**
+ * Once the request header has been read the rest of the request
+ * is parsed in order to get the correct file. Returning a 
+ * request object
+ * @param string request 
+ **/
 Request parse_request(string request){
     Request parsed;
     string str = "";
@@ -77,6 +97,12 @@ Request parse_request(string request){
     }
 }
 
+/**
+ * constructing the response Once the request is parsed correctly
+ * It is a matter of making sure to respond corrently to the 
+ * client and send the response back. 
+ * @param (Request, string, string) 
+ **/
 void contruct_response(Request &request, string &status, string &file_content){
     file_content = "";
     // cannot understand request 400
@@ -149,7 +175,11 @@ void contruct_response(Request &request, string &status, string &file_content){
         file_content = BAD_REQUEST;
     }
 }
-
+/**
+* Thread function constructs the message that will be sent back to the
+* Retriever 
+* @param void * 
+**/
 void *thread_function(void *dummyPtr) {
     // use port 80 for http
     pthread_mutex_lock(&mutex1);
@@ -179,7 +209,10 @@ void *thread_function(void *dummyPtr) {
     return nullptr;
 }
 
-
+/**
+* main function runs commands and begins when script is called
+* @param void * 
+**/
 int main() // 0 args
 {
     // setup socket addr
@@ -225,15 +258,3 @@ int main() // 0 args
 
     }
 }
-
-/*
-Your server waits for a connection and an HTTP GET request (Please perform multi-threaded handling).
-Your server only needs to respond to HTTP GET request.
-After receiving the GET request
-If the file exists, the server opens the file that is requested and sends it (along with the HTTP 200 OK code, of course).
-If the file requested does not exist, the server should return a 404 Not Found code along with a custom File Not Found page.
-If the HTTP request is for SecretFile.html then the web server should return a 401 Unauthorized.
-If the request is for a file that is above the directory structure where your web server is running ( for example, "GET ../../../etc/passwd" ),
- you should return a 403 Forbidden.
-Finally, if your server cannot understand the request, return a 400 Bad Request.
-*/

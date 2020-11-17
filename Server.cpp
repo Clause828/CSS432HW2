@@ -77,21 +77,24 @@ Request parse_request(string request){
     }
 }
 
-string contruct_response(Request &request){
-    string response = "";
+void contruct_response(Request &request, string &status, string &file_content){
+    file_content = "";
     // cannot understand request 400
     if (request.method != "GET"){
-        response = BAD_REQUEST;
+        status = BAD_REQUEST;
+        file_content = BAD_REQUEST;
     }
     else if (request.method == "GET"){
         // past contains ".." - forbidden 403
         if (request.uri.substr(0,2) == ".."){
-            response = FORBIDDEN;
+            status = FORBIDDEN;
+            file_content = FORBIDDEN;
         }
             // request for secret file
         else if (request.uri.length() >= 15 &&
                  request.uri.substr(request.uri.length() - 15, request.uri.length()) == "SecretFile.html"){
-            response = UNAUTHORIZED;
+            status = UNAUTHORIZED;
+            file_content = UNAUTHORIZED;
         }
             // request is accepted
         else {
@@ -110,17 +113,17 @@ string contruct_response(Request &request){
                 // no read permission
                 if (errno == EACCES){
                     // 401
-                    response = UNAUTHORIZED;
+                    status = UNAUTHORIZED;
+                    file_content = UNAUTHORIZED;
                 }
                 else{
                     // 404
-                    response = DOES_NOT_EXIST;
-                    // seg fault
+                    status = DOES_NOT_EXIST;
                     ifstream file("FileNotFound.txt");
                     string line;
                     if (file.is_open()){
                         while (getline(file, line)) {
-                            response += line;
+                            file_content += line;
                         }
                     }
                     file.close();
@@ -128,23 +131,24 @@ string contruct_response(Request &request){
             }
             else {
                 // 200
-                response = OK;
+                status = OK;
                 while (!feof(file)) {
                     char c = fgetc(file);
                     if (c < 0) {
                         // char not in ascii table
                         continue;
                     }
-                    response += c;
+                    file_content += c;
                 }
                 fclose(file);
             }
         }
     }
     else {
-        response = BAD_REQUEST;
+        cout << "bottom 400" << endl;
+        status = BAD_REQUEST;
+        file_content = BAD_REQUEST;
     }
-    return response + "\r\n";
 }
 
 void *thread_function(void *dummyPtr) {
@@ -153,14 +157,22 @@ void *thread_function(void *dummyPtr) {
 
     // read request
     string request = read_data();
-    cout << request << endl;
+    cout << "Request: " << request << endl;
 
     // parse request
     Request parsed = parse_request(request);
-    cout << "Parsed: " << parsed.method << " " << parsed.uri << " " << parsed.protocol << endl;
+    cout << "Parsed:\nMethod: " << parsed.method << "\nURI: " << parsed.uri << "\nProtocol: " << parsed.protocol << endl;
     // construct response
-    string response = contruct_response(parsed);
+    string code;
+    string file_content;
+    contruct_response(parsed, code, file_content);
+    string pageLength = to_string(file_content.size());
+    string response = code +
+                      "Content-Length: " + pageLength + "\r\n"
+                      + "Content-Type: text/plain\r\n" +
+                      "\r\n" + file_content;
     cout << response << endl;
+
     // write response
     int sendResponse = send(clientSD, response.c_str(), strlen(response.c_str()), 0);
 

@@ -30,7 +30,7 @@ const int PORT_NUMBER = 80;
 int settingUpSocket(char* argv[]);
 int callGetRequest(int socketFD);
 string parseResponseHeader(int socketFD);
-
+string getFileName(char *file, string insert);
 /**
  * Main function
  * @param int argc, char* argv[]
@@ -146,7 +146,8 @@ int callGetRequest(int socketFD)
         }
     }
     ofstream outputFile;
-    string file_recv = "recieved.txt";
+    string curr_file(web_file);
+    string file_recv = "recv_" + curr_file;
     outputFile.open(file_recv);
     //create a databuffer
     char databuf[bufSize];
@@ -188,3 +189,4 @@ string parseResponseHeader(int socketFD){
     }
     return responseHeader;
 }
+
